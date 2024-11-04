@@ -1,0 +1,302 @@
+lass Program
+{
+    static void Main()
+    {
+        Console.Write("Введіть перший операнд: ");
+        double operand1 = double.Parse(Console.ReadLine());
+
+        Console.Write("Введіть операцію (+, -, *, /): ");
+        char operation = Console.ReadLine()[0];
+
+        Console.Write("Введіть другий операнд: ");
+        double operand2 = double.Parse(Console.ReadLine());
+
+        double result = Calculate(operand1, operand2, operation);
+
+        Console.WriteLine($"Результат: {result}");
+    }
+
+    // Функція для виконання обчислень
+    static double Calculate(double operand1, double operand2, char operation)
+    {
+        switch (operation)
+        {
+            case '+':
+                return operand1 + operand2;
+            case '-':
+                return operand1 - operand2;
+            case '*':
+                return operand1 * operand2;
+            case '/':
+                if (operand2 != 0)
+                    return operand1 / operand2;
+                else
+                {
+                    Console.WriteLine("Помилка: ділення на нуль!");
+                    return double.NaN; // Повертаємо нечислове значення (NaN) у випадку ділення на нуль
+                }
+            default:
+                Console.WriteLine("Невірна операція!");
+                return double.NaN; // Повертаємо NaN, якщо операція невідома
+        }
+    }
+}
+5.1
+
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Введіть число: ");
+        int number = int.Parse(Console.ReadLine());
+
+        bool isPrime = IsPrime(number);
+
+        if (isPrime)
+        {
+            Console.WriteLine($"{number} є простим числом.");
+        }
+        else
+        {
+            Console.WriteLine($"{number} не є простим числом.");
+        }
+    }
+
+    // Функція для перевірки, чи є число простим
+    static bool IsPrime(int number)
+    {
+        if (number <= 1)
+            return false;
+
+        for (int i = 2; i <= Math.Sqrt(number); i++)
+        {
+            if (number % i == 0)
+                return false;
+        }
+
+        return true;
+    }
+}
+
+
+
+5.2
+
+
+class Program
+{
+    static void Main()
+    {
+        // Курси валют
+        double usdToUah = 44.0;
+        double eurToUah = 45.0;
+
+        Console.WriteLine("Оберіть напрямок конвертації:");
+        Console.WriteLine("1: Гривні -> Долари або Євро");
+        Console.WriteLine("2: Долари або Євро -> Гривні");
+        int choice = int.Parse(Console.ReadLine());
+
+        if (choice == 1)
+        {
+            // Конвертація з гривень у іноземну валюту
+            Console.WriteLine("Оберіть валюту для конвертації (USD або EUR): ");
+            string currency = Console.ReadLine().ToUpper();
+
+            Console.Write("Введіть суму в гривнях: ");
+            double amountInUah = double.Parse(Console.ReadLine());
+
+            double convertedAmount = 0;
+
+            if (currency == "USD")
+            {
+                convertedAmount = ConvertFromUah(amountInUah, usdToUah);
+                Console.WriteLine($"Сума в доларах: {convertedAmount} USD");
+            }
+            else if (currency == "EUR")
+            {
+                convertedAmount = ConvertFromUah(amountInUah, eurToUah);
+                Console.WriteLine($"Сума в євро: {convertedAmount} EUR");
+            }
+            else
+            {
+                Console.WriteLine("Невірно обрана валюта!");
+            }
+        }
+        else if (choice == 2)
+        {
+            // Конвертація з іноземної валюти у гривні
+            Console.WriteLine("Оберіть валюту для конвертації (USD або EUR): ");
+            string currency = Console.ReadLine().ToUpper();
+
+            Console.Write("Введіть суму в іноземній валюті: ");
+            double amountInForeignCurrency = double.Parse(Console.ReadLine());
+
+            double convertedAmount = 0;
+
+            if (currency == "USD")
+            {
+                convertedAmount = ConvertToUah(amountInForeignCurrency, usdToUah);
+                Console.WriteLine($"Сума в гривнях: {convertedAmount} UAH");
+            }
+            else if (currency == "EUR")
+            {
+                convertedAmount = ConvertToUah(amountInForeignCurrency, eurToUah);
+                Console.WriteLine($"Сума в гривнях: {convertedAmount} UAH");
+            }
+            else
+            {
+                Console.WriteLine("Невірно обрана валюта!");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Невірний вибір!");
+        }
+    }
+
+    // Функція для конвертації з гривень у іноземну валюту
+    static double ConvertFromUah(double amountInUah, double exchangeRate)
+    {
+        return amountInUah / exchangeRate;
+    }
+
+    // Функція для конвертації з іноземної валюти у гривні
+    static double ConvertToUah(double amountInForeignCurrency, double exchangeRate)
+    {
+        return amountInForeignCurrency * exchangeRate;
+    }
+}
+
+5.3
+
+
+class Program
+{
+    static (int min, int max) ЗнайтиМінМакс(int[] масив)
+    {
+        if (масив == null || масив.Length == 0)
+        {
+            throw new ArgumentException("Масив не повинен бути порожнім.");
+        }
+
+        int мін = масив[0];
+        int макс = масив[0];
+
+        foreach (int число in масив)
+        {
+            if (число < мін)
+            {
+                мін = число;
+            }
+
+            if (число > макс)
+            {
+                макс = число;
+            }
+        }
+
+        return (мін, макс);
+    }
+
+    static void Main()
+    {
+        int[] масив = { 3, 5, 7, 2, 8, -1, 4, 10 };
+
+        var (мін, макс) = ЗнайтиМінМакс(масив);
+        Console.WriteLine($"Найменший елемент: {мін}, Найбільший елемент: {макс}");
+    }
+}
+5.4
+
+
+class Program
+{
+    static void ПідрахуватиГолосніТаПриголосні(string рядок, out int голосні, out int приголосні)
+    {
+        голосні = 0;
+        приголосні = 0;
+
+        string голосніЛітери = "аеєиіїоуюяАЕЄИІЇОУЮЯ";  // Українські голосні
+
+        foreach (char символ in рядок)
+        {
+            if (Char.IsLetter(символ))  // Перевіряємо, чи є символ буквою
+            {
+                if (голосніЛітери.Contains(символ))
+                {
+                    голосні++;
+                }
+                else
+                {
+                    приголосні++;
+                }
+            }
+        }
+    }
+
+    static void Main()
+    {
+        Console.WriteLine("Введіть слова: ");
+        string рядок = Console.ReadLine();
+
+        ПідрахуватиГолосніТаПриголосні(рядок, out int голосні, out int приголосні);
+
+        Console.WriteLine($"Кількість голосних: {голосні}");
+        Console.WriteLine($"Кількість приголосних: {приголосні}");
+    }
+}
+5.5
+
+
+class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Геометричний калькулятор");
+
+            while (true)
+            {
+                Console.WriteLine("\nОберіть фігуру:");
+                Console.WriteLine("1. Круг");
+                Console.WriteLine("2. Прямокутник");
+                Console.WriteLine("3. Куб");
+                Console.WriteLine("4. Вихід");
+
+                int choice = int.Parse(Console.ReadLine());
+
+                switch (choice)
+                {
+                    case 1:
+                        Console.Write("Введіть радіус круга: ");
+                        double radius = double.Parse(Console.ReadLine());
+                        double circleArea = Math.PI * radius * radius;
+                        Console.WriteLine($"Площа круга: {circleArea:F2}");
+                        break;
+                    case 2:
+                        Console.Write("Введіть довжину прямокутника: ");
+                        double length = double.Parse(Console.ReadLine());
+                        Console.Write("Введіть ширину прямокутника: ");
+                        double width = double.Parse(Console.ReadLine());
+                        double rectangleArea = length * width;
+                        Console.WriteLine($"Площа прямокутника: {rectangleArea:F2}");
+                        break;
+                    case 3:
+                        Console.Write("Введіть довжину ребра куба: ");
+                        double side = double.Parse(Console.ReadLine());
+                        double cubeVolume = side * side * side;
+                        Console.WriteLine($"Об'єм куба: {cubeVolume:F2}");
+                        break;
+                    case 4:
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Невірний вибір.");
+                        break;
+                }
+            }
+        }
+    }
+
+
+5.6
