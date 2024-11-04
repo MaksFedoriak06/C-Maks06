@@ -1,0 +1,393 @@
+// Клас для представлення документа
+class Document
+{
+    public string Title { get; set; }
+    public string Content { get; set; }
+
+    public Document(string title, string content)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException("Назва документа не може бути порожньою.");
+        if (string.IsNullOrWhiteSpace(content))
+            throw new ArgumentException("Зміст документа не може бути порожнім.");
+
+        Title = title;
+        Content = content;
+    }
+
+    public override string ToString()
+    {
+        return $"Назва: {Title}, Зміст: {Content}";
+    }
+}
+
+// Клас для керування стеком документів
+class DocumentStack
+{
+    private Stack<Document> documents = new Stack<Document>();
+
+    // Додавання нового документа до стеку
+    public void AddDocument(Document doc)
+    {
+        documents.Push(doc);
+        Console.WriteLine($"Документ '{doc.Title}' додано до стеку.");
+    }
+
+    // Видалення верхнього документа зі стеку
+    public void RemoveDocument()
+    {
+        if (documents.Count == 0)
+        {
+            Console.WriteLine("Стек порожній. Немає документів для видалення.");
+            return;
+        }
+
+        Document removedDoc = documents.Pop();
+        Console.WriteLine($"Документ '{removedDoc.Title}' видалено зі стеку.");
+    }
+
+    // Отримання верхнього документа зі стеку без його видалення
+    public void PeekDocument()
+    {
+        if (documents.Count == 0)
+        {
+            Console.WriteLine("Стек порожній. Немає документів для перегляду.");
+            return;
+        }
+
+        Document topDoc = documents.Peek();
+        Console.WriteLine($"Верхній документ у стеці: {topDoc}");
+    }
+
+    // Перевірка чи стек порожній
+    public bool IsEmpty()
+    {
+        return documents.Count == 0;
+    }
+}
+
+// Головний клас програми
+class Program
+{
+    static void Main()
+    {
+        var documentStack = new DocumentStack();
+
+        while (true)
+        {
+            Console.WriteLine("\nВиберіть операцію:");
+            Console.WriteLine("1 - Додати новий документ");
+            Console.WriteLine("2 - Видалити верхній документ");
+            Console.WriteLine("3 - Переглянути верхній документ");
+            Console.WriteLine("4 - Вийти");
+            Console.Write("Ваш вибір: ");
+            string choice = Console.ReadLine();
+
+            try
+            {
+                switch (choice)
+                {
+                    case "1":
+                        Console.Write("Введіть назву документа: ");
+                        string title = Console.ReadLine();
+                        Console.Write("Введіть зміст документа: ");
+                        string content = Console.ReadLine();
+
+                        var doc = new Document(title, content);
+                        documentStack.AddDocument(doc);
+                        break;
+
+                    case "2":
+                        documentStack.RemoveDocument();
+                        break;
+
+                    case "3":
+                        documentStack.PeekDocument();
+                        break;
+
+                    case "4":
+                        Console.WriteLine("Програма завершена.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Некоректний вибір. Спробуйте ще раз.");
+                        break;
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Помилка: " + ex.Message);
+            }
+        }
+    }
+}
+// Клас для представлення замовлення
+class Order
+{
+    public int OrderNumber { get; set; }
+    public string DishName { get; set; }
+    public int Quantity { get; set; }
+
+    public Order(int orderNumber, string dishName, int quantity)
+    {
+        if (string.IsNullOrWhiteSpace(dishName))
+            throw new ArgumentException("Назва страви не може бути порожньою.");
+        if (quantity <= 0)
+            throw new ArgumentException("Кількість повинна бути більше 0.");
+
+        OrderNumber = orderNumber;
+        DishName = dishName;
+        Quantity = quantity;
+    }
+
+    public override string ToString()
+    {
+        return $"Замовлення №{OrderNumber}: {DishName}, Кількість: {Quantity}";
+    }
+}
+
+// Клас для керування чергою замовлень
+class OrderQueue
+{
+    private Queue<Order> orders = new Queue<Order>();
+
+    // Додавання нового замовлення до черги
+    public void AddOrder(Order order)
+    {
+        orders.Enqueue(order);
+        Console.WriteLine($"Замовлення №{order.OrderNumber} додано до черги.");
+    }
+
+    // Видалення найстаршого замовлення з черги
+    public void RemoveOrder()
+    {
+        if (orders.Count == 0)
+        {
+            Console.WriteLine("Черга порожня. Немає замовлень для видалення.");
+            return;
+        }
+
+        Order removedOrder = orders.Dequeue();
+        Console.WriteLine($"Замовлення №{removedOrder.OrderNumber} видалено з черги.");
+    }
+
+    // Отримання найстаршого замовлення з черги без його видалення
+    public void PeekOrder()
+    {
+        if (orders.Count == 0)
+        {
+            Console.WriteLine("Черга порожня. Немає замовлень для перегляду.");
+            return;
+        }
+
+        Order oldestOrder = orders.Peek();
+        Console.WriteLine($"Найстаріше замовлення у черзі: {oldestOrder}");
+    }
+
+    // Перевірка чи черга порожня
+    public bool IsEmpty()
+    {
+        return orders.Count == 0;
+    }
+}
+
+// Головний клас програми
+class Program
+{
+    static void Main()
+    {
+        var orderQueue = new OrderQueue();
+
+        while (true)
+        {
+            Console.WriteLine("\nВиберіть операцію:");
+            Console.WriteLine("1 - Додати нове замовлення");
+            Console.WriteLine("2 - Видалити найстарше замовлення");
+            Console.WriteLine("3 - Переглянути найстарше замовлення");
+            Console.WriteLine("4 - Вийти");
+            Console.Write("Ваш вибір: ");
+            string choice = Console.ReadLine();
+
+            try
+            {
+                switch (choice)
+                {
+                    case "1":
+                        Console.Write("Введіть номер замовлення: ");
+                        int orderNumber = int.Parse(Console.ReadLine());
+                        Console.Write("Введіть назву страви: ");
+                        string dishName = Console.ReadLine();
+                        Console.Write("Введіть кількість: ");
+                        int quantity = int.Parse(Console.ReadLine());
+
+                        var order = new Order(orderNumber, dishName, quantity);
+                        orderQueue.AddOrder(order);
+                        break;
+
+                    case "2":
+                        orderQueue.RemoveOrder();
+                        break;
+
+                    case "3":
+                        orderQueue.PeekOrder();
+                        break;
+
+                    case "4":
+                        Console.WriteLine("Програма завершена.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Некоректний вибір. Спробуйте ще раз.");
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Помилка: введіть коректні числові значення.");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Помилка: " + ex.Message);
+            }
+        }
+    }
+}
+
+// Клас для представлення книги
+class Book
+{
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public decimal Price { get; set; }
+
+    public Book(string title, string author, decimal price)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ArgumentException("Назва книги не може бути порожньою.");
+        if (string.IsNullOrWhiteSpace(author))
+            throw new ArgumentException("Автор книги не може бути порожнім.");
+        if (price < 0)
+            throw new ArgumentException("Ціна книги не може бути від'ємною.");
+
+        Title = title;
+        Author = author;
+        Price = price;
+    }
+
+    public override string ToString()
+    {
+        return $"Назва: {Title}, Автор: {Author}, Ціна: {Price} грн";
+    }
+}
+
+// Клас для керування каталогом книг
+class BookStore
+{
+    private Dictionary<int, Book> books = new Dictionary<int, Book>();
+
+    // Додавання нової книги до каталогу
+    public void AddBook(int id, Book book)
+    {
+        if (books.ContainsKey(id))
+        {
+            Console.WriteLine($"Книга з ідентифікатором {id} вже існує.");
+            return;
+        }
+        books[id] = book;
+        Console.WriteLine($"Книга '{book.Title}' додана до каталогу з ідентифікатором {id}.");
+    }
+
+    // Видалення книги за ідентифікатором
+    public void RemoveBook(int id)
+    {
+        if (books.Remove(id))
+        {
+            Console.WriteLine($"Книга з ідентифікатором {id} видалена з каталогу.");
+        }
+        else
+        {
+            Console.WriteLine($"Книга з ідентифікатором {id} не знайдена.");
+        }
+    }
+
+    // Отримання інформації про книгу за ідентифікатором
+    public void GetBookInfo(int id)
+    {
+        if (books.TryGetValue(id, out Book book))
+        {
+            Console.WriteLine($"Інформація про книгу з ідентифікатором {id}: {book}");
+        }
+        else
+        {
+            Console.WriteLine($"Книга з ідентифікатором {id} не знайдена.");
+        }
+    }
+}
+
+// Головний клас програми
+class Program
+{
+    static void Main()
+    {
+        var bookstore = new BookStore();
+
+        while (true)
+        {
+            Console.WriteLine("\nВиберіть операцію:");
+            Console.WriteLine("1 - Додати нову книгу");
+            Console.WriteLine("2 - Видалити книгу за ідентифікатором");
+            Console.WriteLine("3 - Отримати інформацію про книгу за ідентифікатором");
+            Console.WriteLine("4 - Вийти");
+            Console.Write("Ваш вибір: ");
+            string choice = Console.ReadLine();
+
+            try
+            {
+                switch (choice)
+                {
+                    case "1":
+                        Console.Write("Введіть унікальний ідентифікатор книги: ");
+                        int id = int.Parse(Console.ReadLine());
+                        Console.Write("Введіть назву книги: ");
+                        string title = Console.ReadLine();
+                        Console.Write("Введіть автора книги: ");
+                        string author = Console.ReadLine();
+                        Console.Write("Введіть ціну книги: ");
+                        decimal price = decimal.Parse(Console.ReadLine());
+
+                        var book = new Book(title, author, price);
+                        bookstore.AddBook(id, book);
+                        break;
+
+                    case "2":
+                        Console.Write("Введіть ідентифікатор книги для видалення: ");
+                        int removeId = int.Parse(Console.ReadLine());
+                        bookstore.RemoveBook(removeId);
+                        break;
+
+                    case "3":
+                        Console.Write("Введіть ідентифікатор книги для перегляду: ");
+                        int viewId = int.Parse(Console.ReadLine());
+                        bookstore.GetBookInfo(viewId);
+                        break;
+
+                    case "4":
+                        Console.WriteLine("Програма завершена.");
+                        return;
+
+                    default:
+                        Console.WriteLine("Некоректний вибір. Спробуйте ще раз.");
+                        break;
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Помилка: введіть коректні числові значення.");
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Помилка: " + ex.Message);
+            }
+        }
+    }
+}
