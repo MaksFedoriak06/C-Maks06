@@ -1,0 +1,69 @@
+using System;
+class Program{
+    static void Main()    {
+        int sum = 0;
+        for (int i = 2; i <= 50; i++)        {
+            if (IsPrime(i))            {
+                sum += i;            }
+        }
+        Console.WriteLine($"Сума простих чисел від 1 до 50: {sum}");    }
+    static bool IsPrime(int number)
+    {        if (number < 2) return false;
+        for (int i = 2; i <= Math.Sqrt(number); i++)
+        {            if (number % i == 0)
+                return false;        }
+
+        return true;    }
+}
+
+
+3.5
+
+
+using System;
+class Program{
+    static void Main()    {
+        Console.Write("Введіть число для переведення в двійкову систему: ");        int number = int.Parse(Console.ReadLine());
+        string binary = Convert.ToString(number, 2);
+        Console.WriteLine($"Число {number} в двійковій системі: {binary}");
+    }}
+
+
+3.6
+
+
+using System;
+class Program{
+    static void Main()    {
+        Console.Write("Введіть число: ");        int limit = int.Parse(Console.ReadLine());
+        int a = 0, b = 1, sum = 0, count = 0;
+        while (a < limit)
+        {            sum += a;
+            count++;
+            int temp = a;            a = b;
+            b = temp + b;        }
+        Console.WriteLine($"Сума чисел Фібоначчі, менших за {limit}: {sum}");
+        Console.WriteLine($"Кількість елементів: {count}");    }
+}
+
+
+3.7
+
+
+using System;
+class Program{
+    static void Main()    {
+        Console.Write("Введіть перше число: ");        int number1 = int.Parse(Console.ReadLine());
+        Console.Write("Введіть друге число: ");
+        int number2 = int.Parse(Console.ReadLine());
+        int gcd = FindGCD(number1, number2);
+        Console.WriteLine($"Найбільший спільний дільник для {number1} і {number2} = {gcd}");    }
+    static int FindGCD(int a, int b)
+    {        while (b != 0)
+        {            int temp = b;
+            b = a % b;            a = temp;
+        }        return a;
+    }}
+
+
+3.8
